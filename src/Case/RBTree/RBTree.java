@@ -632,7 +632,7 @@ public class RBTree<T extends Comparable<T>> {
         node = null;
     }
 
-    /*
+    /**
      * 删除结点(z)，并返回被删除的结点
      *
      * 参数说明：
@@ -646,7 +646,7 @@ public class RBTree<T extends Comparable<T>> {
             remove(node);
     }
 
-    /*
+    /**
      * 销毁红黑树
      */
     private void destroy(RBTNode<T> tree) {
