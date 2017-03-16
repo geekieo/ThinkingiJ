@@ -5,6 +5,7 @@ import java.util.List;
 import static net.mindview.util.Print.printf;
 
 /**
+ * 使用字典序实现全排列
  * Created by Geekie on 2017/3/15.
  */
 public class FullPermutation {
