@@ -1,4 +1,5 @@
 /**
+ * 对象是否相等 equals 方法重写
  * Created by Geekie on 2017/2/17 11:36.
  */
 import java.util.ArrayList;
@@ -45,15 +46,14 @@ class User{
         User user = (User) o;
 
         if (!userID.equals(user.userID)) return false;
-        return userName.equals(user.userName);
+        return userName != null ? userName.equals(user.userName) : user.userName == null;
 
     }
 
     @Override
     public int hashCode() {
         int result = userID.hashCode();
-        result = 31 * result + userName.hashCode();
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
         return result;
     }
-
 }

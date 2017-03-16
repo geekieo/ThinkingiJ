@@ -3,6 +3,7 @@ import net.mindview.util.Print;
 import java.math.BigDecimal;
 
 /**
+ * 精度损失
  * Created by Geekie on 2017/2/13 17:52.
  */
 public class AccuracyLoss {
