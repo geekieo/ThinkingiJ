@@ -1,6 +1,6 @@
 package String;
 /**
- * 滑动串方法
+ * 最长公共子串 滑动解法 by王新
  * Created by wangxin on 2017/3/17.
  */
 public class LongestCommonStringByWX {
@@ -50,7 +50,7 @@ public class LongestCommonStringByWX {
     }
 
     public static void main(String[] args){
-        char[] a=new String("bcabbbc").toCharArray();
+        char[] a=new String("xxbcab").toCharArray();
         char[] b=new String("bcabbbc").toCharArray();
         int[] r=find(a,b);
         System.out.println("起始位置：长度较短的字符串的第"+r[0]+"个字符开始:长度"+r[1]);
