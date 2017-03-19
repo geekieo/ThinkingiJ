@@ -17,7 +17,6 @@ public class Lily {
             Thread thread = Thread.currentThread();
             thread.sleep(3000);//暂停3秒
         }catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

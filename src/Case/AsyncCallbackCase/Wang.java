@@ -7,7 +7,7 @@ package AsyncCallbackCase;
 public class Wang implements Callback{
 
     /**
-     * 小李对象的引用
+     * 丽丽对象的引用
      */
     private Lily lily;
 
@@ -21,7 +21,7 @@ public class Wang implements Callback{
     }
 
     /**
-     * 小王问小李问题
+     * 小王问丽丽问题
      */
     public void askQusetion (final String question) {
         System.out.println("小王的问题是："+question);
@@ -31,7 +31,8 @@ public class Wang implements Callback{
             @Override
             public void run() {
                 /**
-                 * 小王调用丽丽的方法，注册回调接口；
+                 * 小王调用丽丽的方法，并在丽丽那注入小王，获取答案的回调接口，
+                 * 丽丽调用 Callback 接口即为调用这个小王wang；
                  */
                 lily.executeMessage(Wang.this,question);
             }

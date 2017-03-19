@@ -11,13 +11,13 @@ public class Test {
         Lily lily = new Lily();
 
         /**
-         * new 一个小王，带上lili的引用，
-         * lily 最后会用小王的方法告诉小王答案
+         * new 一个小王，带上丽丽的引用，
+         * 丽丽最后会用小王的方法告诉小王答案
          */
         Wang wang = new Wang(lily);
 
         /**
-         * 小王问小李问题
+         * 小王问丽丽问题
          */
         wang.askQusetion("1 到 10 = ?");
     }
