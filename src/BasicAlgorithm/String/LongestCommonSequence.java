@@ -44,6 +44,7 @@ public class LongestCommonSequence {
      */
     public static SequencePoint[][] getSequenceMat(char[] str1, char[] str2) {
         SequencePoint[][] mat = new SequencePoint[str1.length][str2.length];
+
         SequencePoint startPoint = new SequencePoint();
         startPoint.sequence = 0;
         startPoint.direction = Direction.START.getCode();
@@ -57,9 +58,12 @@ public class LongestCommonSequence {
 
         for(int i = 1; i<str1.length; i++) {
             for(int j = 1; j<str2.length; j++) {
+                SequencePoint point = new SequencePoint();
                 if(str1[i] == str2[j]) {
-                    mat[i][j].sequence=mat[i-1][j-1].sequence+1;
-                    mat[i][j].direction= Direction.UL.getCode();
+                    //java 的数组存的是对象的引用，故只可以传对象，不可对其引用赋值，只可以从引用取值。
+                    point.sequence=mat[i-1][j-1].sequence+1;
+                    point.direction= Direction.UL.getCode();
+                    mat[i][j]=point;
                 }
                 if(str1[i] != str2[j]) {
                     mat[i][j] = max(mat[i-1][j],mat[i][j-1]);
@@ -96,7 +100,13 @@ public class LongestCommonSequence {
      * @return
      */
     public static void showLCSequence(SequencePoint[][] sequenceMat, char[] str1, char[] str2) {
-        System.out.print("keep shipping");
+        //
+        for(int i =0; i< sequenceMat.length;i++) {
+            for (int j = 0; j < sequenceMat[i].length; j++) {
+                System.out.print(Direction.valueOf(sequenceMat[i][j].direction).getName());
+            }
+            System.out.println();
+        }
     }
 }
 
@@ -136,15 +146,15 @@ enum  Direction {
     //字符不等,上边序号>左边序号
     //字符不等,左边序号>上边序号
     //字符不等,上边序号=左边序号
-    START("O",-1),
+    START("O ",-1),
     UL("↖",0),
     UP("↑",1),
     LEFT("←",2),
-    UPorLEFT("+",3);
+    UPorLEFT("+ ",3);
 
     // 成员变量
     private String name;
-    private int code;
+    private Integer code;
     // 构造方法
     private Direction(String name, int code) {
         this.name = name;
@@ -159,8 +169,16 @@ enum  Direction {
         return this.code;
     }
 
-    public void print() {
-        System.out.println(this.code+":"+this.name);
+    public static Direction valueOf(Integer code) {
+        if(code != null) {
+            for(Direction d: values()) {
+                if (d.getCode()== code) {
+                    return d;
+                }
+            }
+        }
+        return null;
     }
+
 
 }
