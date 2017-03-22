@@ -86,7 +86,10 @@ public class LongestCommonSequence {
             dstPoint.direction = Direction.LEFT.getCode();
         } else if (upPoint.sequence == leftPoint.sequence) {
             dstPoint.sequence = leftPoint.sequence;//这儿的序号取上取左都一样
-            dstPoint.direction = Direction.UPorLEFT.getCode();
+            if(dstPoint.sequence != 0)
+                dstPoint.direction = Direction.UPorLEFT.getCode();
+            else
+                dstPoint.direction = Direction.START.getCode();
         }
         return dstPoint;
     }
