@@ -2,6 +2,7 @@ package String;
 
 import javax.sound.midi.Sequence;
 
+import static javax.swing.text.html.HTML.Tag.S;
 import static sun.swing.MenuItemLayoutHelper.max;
 
 /**
@@ -12,8 +13,10 @@ import static sun.swing.MenuItemLayoutHelper.max;
 public class LongestCommonSequence {
 
     public static void main(String[] args){
-        char[] strA = new String("noapplewa").toCharArray();
-        char[] strB = new String("apthepapilewa").toCharArray();
+//        char[] strA = new String("noapplewa").toCharArray();
+//        char[] strB = new String("apthepapilewa").toCharArray();
+        char[] strA = new String("app").toCharArray();
+        char[] strB = new String("caple").toCharArray();
         /**
          * 注意！这次的程序结构是顺序树型的，不是嵌套型的。
          * 先整理出多个顺序的枝干，再加分别叶子，代码结构更清晰。
@@ -43,11 +46,13 @@ public class LongestCommonSequence {
      * @return
      */
     public static SequencePoint[][] getSequenceMat(char[] str1, char[] str2) {
+        //增加初始化行列
+        str1 = (" "+String.valueOf(str1)).toCharArray();
+        str2 = (" "+String.valueOf(str2)).toCharArray();
         SequencePoint[][] mat = new SequencePoint[str1.length][str2.length];
-
         SequencePoint startPoint = new SequencePoint();
         startPoint.sequence = 0;
-        startPoint.direction = Direction.START.getCode();
+        startPoint.direction = Direction.START;
         //边界初始化，序号(长度)为0，无搜索方向，置为回溯终点的状态
         for (int i =0;i<str1.length;i++) {
             mat[i][0] = startPoint;
@@ -55,14 +60,14 @@ public class LongestCommonSequence {
         for (int j =0;j<str2.length;j++) {
             mat[0][j] = startPoint;
         }
-
+        //开始遍历
         for(int i = 1; i<str1.length; i++) {
             for(int j = 1; j<str2.length; j++) {
                 SequencePoint point = new SequencePoint();
                 if(str1[i] == str2[j]) {
                     //java 的数组存的是对象的引用，故只可以传对象，不可对其引用赋值，只可以从引用取值。
                     point.sequence=mat[i-1][j-1].sequence+1;
-                    point.direction= Direction.UL.getCode();
+                    point.direction= Direction.UL;
                     mat[i][j]=point;
                 }
                 if(str1[i] != str2[j]) {
@@ -80,16 +85,16 @@ public class LongestCommonSequence {
         SequencePoint dstPoint = new SequencePoint();
         if (upPoint.sequence > leftPoint.sequence) {
             dstPoint.sequence = upPoint.sequence;
-            dstPoint.direction=Direction.UP.getCode();
+            dstPoint.direction=Direction.UP;
         } else if (upPoint.sequence < leftPoint.sequence) {
             dstPoint.sequence = leftPoint.sequence;
-            dstPoint.direction = Direction.LEFT.getCode();
+            dstPoint.direction = Direction.LEFT;
         } else if (upPoint.sequence == leftPoint.sequence) {
             dstPoint.sequence = leftPoint.sequence;//这儿的序号取上取左都一样
             if(dstPoint.sequence != 0)
-                dstPoint.direction = Direction.UPorLEFT.getCode();
+                dstPoint.direction = Direction.UPorLEFT;
             else
-                dstPoint.direction = Direction.START.getCode();
+                dstPoint.direction = Direction.START;
         }
         return dstPoint;
     }
@@ -103,12 +108,62 @@ public class LongestCommonSequence {
      * @return
      */
     public static void showLCSequence(SequencePoint[][] sequenceMat, char[] str1, char[] str2) {
-        //
+        if(sequenceMat==null || str1.length==0 || str2.length==0)
+            return;
+        System.out.println("字符串1："+ String.valueOf(str1));
+        System.out.println("字符串2："+ String.valueOf(str2));
+        //===========中间数据展示=============
+        System.out.println("路径：");
         for(int i =0; i< sequenceMat.length;i++) {
             for (int j = 0; j < sequenceMat[i].length; j++) {
-                System.out.print(Direction.valueOf(sequenceMat[i][j].direction).getName());
+                System.out.print(sequenceMat[i][j].direction.getName());
             }
             System.out.println();
+        }
+        System.out.println("次序（公共子串长度）：");
+        for(int i =0; i< sequenceMat.length;i++) {
+            for (int j = 0; j < sequenceMat[i].length; j++) {
+                System.out.print(sequenceMat[i][j].sequence+" ");
+            }
+            System.out.println();
+        }
+        //===========最长公共子串=============
+        System.out.println("最长公共子串是：");
+        print(sequenceMat,str1, str1.length,str2.length);
+    }
+
+    /**
+     * 回溯mat，递归从 str1 中打印
+     * @param mat
+     * @param str1
+     * @param i
+     * @param j
+     */
+    public static void print(SequencePoint[][] mat, char[] str1, int i, int j) {
+        //注意 mat 左边和上边多了一行一列，mat 对应的记录下标为str的下标+1
+        if(mat[i][j].sequence == 0) {
+            System.out.println();
+            return;
+        }
+        SequencePoint point = mat[i][j];
+        //java case 后面只支持常量，不支持变量。如想使用枚举，则switch必须是枚举类型。
+        switch (point.direction) {
+            case UL:
+                System.out.print(str1[i-1]);//打印公共字符
+                print(mat, str1, --i, --j);//往左上
+                break;
+            case UP:
+                print(mat, str1, --i, j);//往左
+                break;
+            case LEFT:
+                print(mat, str1, i, --j);//往上
+                break;
+            case UPorLEFT:
+                print(mat, str1, --i, j);//往左
+                print(mat, str1, i, --j);//往上
+                break;
+            default:
+                return;
         }
     }
 }
@@ -119,8 +174,8 @@ public class LongestCommonSequence {
  * 次序即长度
  */
 class SequencePoint {
-    int sequence;//次序
-    int direction;//在二维数组中,如果横纵俩值相等，则记录邻接斜向的次序，否则记录次序较大的子串方向
+    Integer sequence;//次序
+    Direction direction;//在二维数组中,如果横纵俩值相等，则记录邻接斜向的次序，否则记录次序较大的子串方向
 
     public int getSequence() {
         return sequence;
@@ -130,22 +185,23 @@ class SequencePoint {
         this.sequence = sequence;
     }
 
-    public int getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 }
 
 
 /**
- * 回溯方向，如果不记录这个值，可通过邻域比较获得回溯方向
+ * 回溯方向，如果不记录这个值，可通过比较领域次序获得回溯方向，再通过对比横纵值确定是否为公共字符，比较繁琐
+ * 只有 UL("↖",0) 为公共子串有效字符
  */
 enum  Direction {
     //初始化
-    //字符相等
+    //字符相等，公共子串字符
     //字符不等,上边序号>左边序号
     //字符不等,左边序号>上边序号
     //字符不等,上边序号=左边序号
@@ -168,7 +224,7 @@ enum  Direction {
         return this.name;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return this.code;
     }
 
