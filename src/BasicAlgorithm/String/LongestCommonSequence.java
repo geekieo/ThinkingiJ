@@ -1,10 +1,5 @@
 package String;
 
-import javax.sound.midi.Sequence;
-
-import static javax.swing.text.html.HTML.Tag.S;
-import static sun.swing.MenuItemLayoutHelper.max;
-
 /**
  * 最长公共子序列 LCS
  * 使用二维矩阵记录相等字符长度或最长子子串长度，最后倒序查找即可
@@ -13,10 +8,10 @@ import static sun.swing.MenuItemLayoutHelper.max;
 public class LongestCommonSequence {
 
     public static void main(String[] args){
-//        char[] strA = new String("noapplewa").toCharArray();
-//        char[] strB = new String("apthepapilewa").toCharArray();
-        char[] strA = new String("app").toCharArray();
-        char[] strB = new String("caple").toCharArray();
+        char[] strA = new String("noapplewa").toCharArray();
+        char[] strB = new String("apthepapilewa").toCharArray();
+//        char[] strA = new String("app").toCharArray();
+//        char[] strB = new String("caple").toCharArray();
         /**
          * 注意！这次的程序结构是顺序树型的，不是嵌套型的。
          * 先整理出多个顺序的枝干，再加分别叶子，代码结构更清晰。
@@ -141,6 +136,7 @@ public class LongestCommonSequence {
      */
     public static void print(SequencePoint[][] mat, char[] str1, int i, int j) {
         //注意 mat 左边和上边多了一行一列，mat 对应的记录下标为str的下标+1
+        //递归收敛条件
         if(mat[i][j].sequence == 0) {
             System.out.println();
             return;
@@ -149,7 +145,7 @@ public class LongestCommonSequence {
         //java case 后面只支持常量，不支持变量。如想使用枚举，则switch必须是枚举类型。
         switch (point.direction) {
             case UL:
-                System.out.print(str1[i-1]);//打印公共字符
+                System.out.print(str1[i-1]);//记录公共字符。因为是回溯，字符是倒序的，需要存入堆栈后打印可把 LCS 调整为正序
                 print(mat, str1, --i, --j);//往左上
                 break;
             case UP:
@@ -238,6 +234,5 @@ enum  Direction {
         }
         return null;
     }
-
 
 }
