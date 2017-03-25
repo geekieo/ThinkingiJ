@@ -1,5 +1,7 @@
 package String;
 
+import Stack.Stack;
+
 /**
  * 最长公共子序列 LCS
  * 使用二维矩阵记录相等字符长度或最长子子串长度，最后倒序查找即可
@@ -124,39 +126,52 @@ public class LongestCommonSequence {
         }
         //===========最长公共子串=============
         System.out.println("最长公共子串是：");
-        print(sequenceMat,str1, str1.length,str2.length);
+        Stack<char[]> stack = new Stack<char[]>();
+        getLCC(sequenceMat,str1, str1.length,str2.length, stack);
+        for(int i=stack.size()-1; i>0; i--) {
+            if(stack.peek()==";".toCharArray())
+                System.out.println();
+            System.out.print(stack.pop());
+        }
     }
 
     /**
-     * 回溯mat，递归从 str1 中打印
+     * 逆序获得当前子串的公共字符
+     * 回溯mat，递归，将获得的公共字符压入堆栈 stackLCS
+     * 每个LCS用 ; 隔开
      * @param mat
      * @param str1
      * @param i
      * @param j
+     * @param stackLCS
      */
-    public static void print(SequencePoint[][] mat, char[] str1, int i, int j) {
+    public static void getLCC(SequencePoint[][] mat, char[] str1, int i, int j, Stack<char[]> stackLCS) {
         //注意 mat 左边和上边多了一行一列，mat 对应的记录下标为str的下标+1
         //递归收敛条件
         if(mat[i][j].sequence == 0) {
             System.out.println();
+            stackLCS.push(";".toCharArray());
             return;
         }
         SequencePoint point = mat[i][j];
         //java case 后面只支持常量，不支持变量。如想使用枚举，则switch必须是枚举类型。
         switch (point.direction) {
             case UL:
-                System.out.print(str1[i-1]);//记录公共字符。因为是回溯，字符是倒序的，需要存入堆栈后打印可把 LCS 调整为正序
-                print(mat, str1, --i, --j);//往左上
+                System.out.print(str1[i-1]);//记录公共字符。因为是回溯，字符是倒序的，需要存入堆栈 LCS 可调整为正序
+                // TODO: 2017/3/26 字符压栈
+                char[] c={str1[i-1]};
+                stackLCS.push(c);
+                getLCC(mat, str1, --i, --j, stackLCS);//往左上
                 break;
             case UP:
-                print(mat, str1, --i, j);//往左
+                getLCC(mat, str1, --i, j, stackLCS);//往左
                 break;
             case LEFT:
-                print(mat, str1, i, --j);//往上
+                getLCC(mat, str1, i, --j, stackLCS);//往上
                 break;
             case UPorLEFT:
-                print(mat, str1, --i, j);//往左
-                print(mat, str1, i, --j);//往上
+                getLCC(mat, str1, --i, j, stackLCS);//往左
+                getLCC(mat, str1, i, --j, stackLCS);//往上
                 break;
             default:
                 return;
