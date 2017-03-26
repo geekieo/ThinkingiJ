@@ -10,10 +10,10 @@ import Stack.Stack;
 public class LongestCommonSequence {
 
     public static void main(String[] args){
-        char[] strA = new String("noapplewa").toCharArray();
-        char[] strB = new String("apthepapilewa").toCharArray();
-//        char[] strA = new String("app").toCharArray();
-//        char[] strB = new String("caple").toCharArray();
+//        char[] strA = new String("noapplewa").toCharArray();
+//        char[] strB = new String("apthepapilewa").toCharArray();
+        char[] strA = new String("app").toCharArray();
+        char[] strB = new String("caple").toCharArray();
         /**
          * 注意！这次的程序结构是顺序树型的，不是嵌套型的。
          * 先整理出多个顺序的枝干，再加分别叶子，代码结构更清晰。
@@ -125,13 +125,21 @@ public class LongestCommonSequence {
             System.out.println();
         }
         //===========最长公共子串=============
-        System.out.println("最长公共子串是：");
         Stack<char[]> stack = new Stack<char[]>();
         getLCC(sequenceMat,str1, str1.length,str2.length, stack);
-        for(int i=stack.size()-1; i>0; i--) {
-            if(stack.peek()==";".toCharArray())
+        System.out.println("最长公共子串是：");
+        stack.pop();//弹出栈顶分号
+        for(int i=stack.size()-1; i>=0; i--) {
+//            char[] ppp= stack.peek();
+//            char[] lll = ";".toCharArray();
+//            boolean b = (ppp==lll);       //false
+//            boolean bb = ppp[0]==lll[0];  //true
+            if(new String(stack.peek()).equals(";")){
                 System.out.println();
-            System.out.print(stack.pop());
+                stack.pop();
+            }
+            else
+                System.out.print(stack.pop());
         }
     }
 
@@ -158,7 +166,6 @@ public class LongestCommonSequence {
         switch (point.direction) {
             case UL:
                 System.out.print(str1[i-1]);//记录公共字符。因为是回溯，字符是倒序的，需要存入堆栈 LCS 可调整为正序
-                // TODO: 2017/3/26 字符压栈
                 char[] c={str1[i-1]};
                 stackLCS.push(c);
                 getLCC(mat, str1, --i, --j, stackLCS);//往左上
