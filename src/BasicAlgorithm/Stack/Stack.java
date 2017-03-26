@@ -1,14 +1,12 @@
 package Stack;
 
-import java.util.EmptyStackException;
-
 /**
  * 堆栈 数组实现
  * Created by Geekie on 2017/3/24.
  */
 public  class Stack<T>  {
     private Object[] stack = null;//数组栈，Objext[0] 为栈底
-    private int size = 0;//栈容量
+    private int size = 0;//当前栈高
 
     public Stack() {
         stack = new Object[10];
@@ -34,6 +32,7 @@ public  class Stack<T>  {
     //向堆栈里压入一个数据
     public void push(T element){
         expand(size+1);
+        stack[size++]=element;//数组下标从0开始，实际下标为容量-1。先入栈，再自增。
     }
 
     //数组容量增加，不够数组长度翻倍
