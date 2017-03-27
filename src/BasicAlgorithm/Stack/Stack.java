@@ -12,6 +12,7 @@ public  class Stack<T>  {
     public Stack() {
         stack = new Object[10];
     }
+    //带参构造函数，参数为堆栈数组长度
     public Stack(int initialSize){
         stack = new Object[initialSize];
     }
