@@ -8,10 +8,10 @@ public  class Stack<T>  {
     private Object[] stack = null;//数组栈，Objext[0] 为栈底
     private int size = 0;//当前栈高
 
+    //构造函数
     public Stack() {
         stack = new Object[10];
     }
-
     public Stack(int initialSize){
         stack = new Object[initialSize];
     }
