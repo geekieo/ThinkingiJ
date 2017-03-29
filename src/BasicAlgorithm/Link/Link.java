@@ -70,8 +70,10 @@ public class Link<T> {
      */
     public int length() {
         int length = 0;
-        while (head.next != null) {
+        Node temp = head;
+        while (temp != null) {
             length++;
+            temp = temp.next;
         }
         return length;
     }
