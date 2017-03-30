@@ -87,6 +87,7 @@ public class MyLink extends Link {
     /**
      * 链表排序
      * 排序算法为选择排序
+     * 申请两个指针节点，一个遍历全表，一个遍历全部元素做对比
      * 当data为数字时可用
      * @return
      */
@@ -109,6 +110,87 @@ public class MyLink extends Link {
         return head;
     }
 
+    /**
+     * 删除重复节点
+     * 同选择排序，申请两个指针节点，一个遍历全表，一个遍历全部元素做对比
+     * @param head
+     */
+    public void deleteDuplecate(Node head) {
+        Node p = head;
+        while (p != null) {
+            Node q = p;
+            while (q.next != null) {
+                if (p.data == q.next.data) {
+                    q.next = q.next.next;
+                } else
+                    q = q.next;
+            }
+            p = p.next;
+        }
+    }
+
+    /**
+     * 倒序输出单链表
+     * 递归方式实现
+     *
+     * @param pNode
+     */
+    public void printListReversely(Node pNode) {
+        System.out.println("printListReversely:");
+        if (pNode != null) {
+            printListReversely(pNode.next);
+            System.out.println( pNode.data);
+        }
+    }
+
+    /**
+     * 判断链表是否有环
+     * 注意这里的环并非是全表成环，环可以从 head 后面某个节点开始
+     * 如 1,2,3,4,5,6 其中6的下个节点为3，形成环，这就叫链表有环
+     * 单向链表有环时，尾节点将和某个节点相同
+     *
+     * @param head
+     * @return
+     */
+    public boolean IsLoop(Node head) {
+        Node fast = head, slow = head;
+        if (fast == null) {
+            return false;
+        }
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                System.out.println("该链表有环");
+                return true;
+            }
+        }
+        return !(fast == null || fast.next == null);
+    }
+
+    /**
+     * 找出链表环的入口
+     *
+     * @param head
+     * @return
+     */
+    public Node FindLoopPort(Node head) {
+        Node fast = head, slow = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast)
+                break;
+        }
+        if (fast == null || fast.next == null)
+            return null;
+        slow = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
+    }
 }
 class test{
     public static void main(String[] args) {
