@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 泛型测试
+ */
 public class GenericTest {
 
     public static void main_(String[] args) {
