@@ -33,7 +33,7 @@ public class FullPermutation {
         return;
     }
 
-    //全排列
+    // 对前n个数求全排列（全部的排列组合）
     void prim (int[] list, int n) {
         int num = 1, a = 0, b = 0;
         for (int i = n; i > 0; --i)     //计算有多少种情况，就循环多少次
